@@ -46,6 +46,9 @@ class AppColors{
   static const Color navBarGradientStart = Color(0xFFFFF176);
   static const Color navBarGradientEnd = Color(0xFFFFD54F);
 
+  static const Color drawerColor = Color(0xff034469);
+  static const Color drawerColor1 = Color(0xffc8def8);
+
   static const Color gray7 = Color(0xFFCBCBCB);
   static const Color gray3 = Color(0xFFE9E9E9);
   static const Color white = Color(0xFFFFFFFF);
@@ -73,7 +76,7 @@ class AppColors{
 
   static const Color backgroundColor = Color(0xFFF3F3F9);
   static const Color colorSkyBlue500 = Color(0xFF0ab39c);
-  static const Color colorSkyBlue300 = Color(0xFF84E8DA);
+  static const Color colorSkyBlue300 = Color(0xFF81FFE1);
   static const Color colorLightBlue = Color(0xFFB7D3FC);
   static const Color colorLightBlue500 = Color(0xFFF0EFFF);
   static const Color colorGreen = Color(0xFF69d99f);
@@ -118,6 +121,6 @@ class AppColors{
 
 
 
- // Background color
+// Background color
 
 }

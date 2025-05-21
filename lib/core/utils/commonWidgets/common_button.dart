@@ -6,7 +6,7 @@ import '../helper/screen_utils.dart';
 class CommonButton extends StatelessWidget {
   final double height;
   final double width;
-  final Color buttonColor;
+  final Color? buttonColor;
   final String buttonName;
   final Color buttonTextColor;
   final Color gradientColor1;
@@ -20,7 +20,7 @@ class CommonButton extends StatelessWidget {
     super.key,
     required this.height,
     required this.width,
-    required this.buttonColor,
+    this.buttonColor,
     required this.buttonName,
     required this.buttonTextColor,
     required this.gradientColor1,
@@ -65,6 +65,8 @@ class CommonButton extends StatelessWidget {
             ? Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            Icon(icon, size: 24, color: Colors.white),
+            SizedBox(width: 5,),
             Text(
               buttonName,
               style: TextStyle(
@@ -72,9 +74,11 @@ class CommonButton extends StatelessWidget {
                 color: buttonTextColor,
                 fontSize: fontSize,
                 fontFamily: "comic_neue",
+                decoration: TextDecoration.none,
+
               ),
             ),
-            Icon(icon, size: 24, color: Colors.white),
+
           ],
         )
             : Center(
@@ -85,6 +89,8 @@ class CommonButton extends StatelessWidget {
               color: buttonTextColor,
               fontSize: fontSize,
               fontFamily: "comic_neue",
+              decoration: TextDecoration.none,
+
             ),
           ),
         ),

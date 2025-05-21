@@ -1,6 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:snib_order_tracking_app/features/auth/presentation/login_screen.dart';
+import 'package:snib_order_tracking_app/features/dashboard/presentation/acknowledge_image_upload_screen.dart';
+import 'package:snib_order_tracking_app/features/dashboard/presentation/dashboard_scanner_screen.dart';
+import 'package:snib_order_tracking_app/features/dashboard/presentation/qr_generator_screen.dart';
+import 'package:snib_order_tracking_app/features/dashboard/presentation/success_screen.dart';
 import 'package:snib_order_tracking_app/features/splash_screen/presentation/splash_screen.dart';
 import '../../utils/helper/app_fontSize.dart';
 
@@ -8,6 +13,11 @@ class RouteGenerator{
 
   // general navigation
   static const kSplash = "/";
+  static const kSigninScreen = "/SigninScreen";
+  static const kDashboardScannerScreen = "/DashboardScannerScreen";
+  static const kAcknowledgeImageUploadScreen = "/AcknowledgeImageUploadScreen";
+  static const kSuccessScreen = "/SuccessScreen";
+  static const kQrGeneratorScreen = "/QrGeneratorScreen";
 
 
 
@@ -24,6 +34,16 @@ class RouteGenerator{
       case kSplash:
         //return MaterialPageRoute(builder: (_)=>SplashScreen());
         return _animatedPageRoute(SplashScreen());
+     case kSigninScreen:
+        return _animatedPageRoute(SigninScreen());
+    case kDashboardScannerScreen:
+        return _animatedPageRoute(DashboardScannerScreen());
+    case kAcknowledgeImageUploadScreen:
+        return _animatedPageRoute(AcknowledgeImageUploadScreen());
+    case kSuccessScreen:
+        return _animatedPageRoute(SuccessScreen());
+    case kQrGeneratorScreen:
+        return _animatedPageRoute(QrGeneratorScreen());
 
 
 
