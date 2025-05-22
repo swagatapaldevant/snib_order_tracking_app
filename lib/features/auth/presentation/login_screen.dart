@@ -65,6 +65,7 @@ class _SigninScreenState extends State<SigninScreen> {
               CommonButton(
                 onTap: () {
                   Navigator.pushReplacementNamed(context, "/DashboardScannerScreen");
+                  //Navigator.pushReplacementNamed(context, "/QrGeneratorScreen");
                 },
                 height: ScreenUtils().screenHeight(context) * 0.05,
                 width: ScreenUtils().screenWidth(context),

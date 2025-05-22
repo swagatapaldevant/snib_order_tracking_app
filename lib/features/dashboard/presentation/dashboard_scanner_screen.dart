@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 import 'package:snib_order_tracking_app/core/utils/commonWidgets/common_button.dart';
 import 'package:snib_order_tracking_app/core/utils/constants/app_colors.dart';
@@ -16,6 +18,7 @@ class _DashboardScannerScreenState extends State<DashboardScannerScreen> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
   bool scanned = false;
+  DateTime? currentBackPressTime;
 
   @override
   void reassemble() {
@@ -28,21 +31,35 @@ class _DashboardScannerScreenState extends State<DashboardScannerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          QRView(
-            key: qrKey,
-            onQRViewCreated: _onQRViewCreated,
-            overlay: QrScannerOverlayShape(
-              borderColor: Colors.yellow,
-              borderRadius: 10,
-              borderLength: 30,
-              borderWidth: 10,
-              cutOutSize: 250,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        DateTime now = DateTime.now();
+        if (didPop || currentBackPressTime == null ||
+            now.difference(currentBackPressTime!) > Duration(seconds: 2)) {
+          currentBackPressTime = now;
+          Fluttertoast.showToast(msg: 'Tap back again to Exit');
+          // return false;
+        }else{
+          SystemNavigator.pop();
+        }
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            QRView(
+              key: qrKey,
+              onQRViewCreated: _onQRViewCreated,
+              overlay: QrScannerOverlayShape(
+                borderColor: Colors.yellow,
+                borderRadius: 10,
+                borderLength: 30,
+                borderWidth: 10,
+                cutOutSize: 250,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
