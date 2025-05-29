@@ -61,14 +61,14 @@ class _AcknowledgeImageUploadScreenState extends State<AcknowledgeImageUploadScr
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   AttachFileContainerWidget(
-                      bgColor: AppColors.colorT1.withOpacity(0.7),
+                      bgColor: AppColors.alphabetFunContainer4,
                       icon: Icons.attach_file,
-                      textColor: AppColors.colorPrimaryText,
+                      textColor: AppColors.white,
                       text: 'Attach files Select from your device',
                       onTap: pickFiles
                   ),
                   AttachFileContainerWidget(
-                    bgColor: AppColors.colorSkyBlue500,
+                    bgColor: AppColors.alphabetSafeArea,
                     icon: Icons.camera_alt_outlined,
                     textColor: AppColors.white,
                     text: "Capture image from camera",

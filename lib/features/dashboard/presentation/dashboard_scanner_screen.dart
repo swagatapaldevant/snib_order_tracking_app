@@ -18,7 +18,7 @@ class _DashboardScannerScreenState extends State<DashboardScannerScreen> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
   bool scanned = false;
-  DateTime? currentBackPressTime;
+
 
   @override
   void reassemble() {
@@ -31,35 +31,30 @@ class _DashboardScannerScreenState extends State<DashboardScannerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) {
-        DateTime now = DateTime.now();
-        if (didPop || currentBackPressTime == null ||
-            now.difference(currentBackPressTime!) > Duration(seconds: 2)) {
-          currentBackPressTime = now;
-          Fluttertoast.showToast(msg: 'Tap back again to Exit');
-          // return false;
-        }else{
-          SystemNavigator.pop();
-        }
-      },
-      child: Scaffold(
-        body: Stack(
-          children: [
-            QRView(
-              key: qrKey,
-              onQRViewCreated: _onQRViewCreated,
-              overlay: QrScannerOverlayShape(
-                borderColor: Colors.yellow,
-                borderRadius: 10,
-                borderLength: 30,
-                borderWidth: 10,
-                cutOutSize: 250,
-              ),
+    return Scaffold(
+      body: Stack(
+        children: [
+          QRView(
+            key: qrKey,
+            onQRViewCreated: _onQRViewCreated,
+            overlay: QrScannerOverlayShape(
+              borderColor: Colors.yellow,
+              borderRadius: 10,
+              borderLength: 30,
+              borderWidth: 10,
+              cutOutSize: 250,
             ),
-          ],
-        ),
+          ),
+          Positioned(
+            top: ScreenUtils().screenHeight(context)*0.05,
+            left: ScreenUtils().screenWidth(context)*0.05,
+            child: Bounceable(
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: Icon(Icons.highlight_remove, color: AppColors.gray7,size: 40,)),
+          )
+        ],
       ),
     );
   }
@@ -70,109 +65,12 @@ class _DashboardScannerScreenState extends State<DashboardScannerScreen> {
       if (!scanned) {
         scanned = true;
         controller.pauseCamera();
-        _showPickupDropDialog(scanData.code ?? "No Data");
+        //_showPickupDropDialog(scanData.code ?? "No Data");
+        Navigator.pushNamed(context, "/AcknowledgeImageUploadScreen");
       }
     });
   }
 
-  void _showPickupDropDialog(String data) {
-    showGeneralDialog(
-      context: context,
-      barrierDismissible: false,
-      barrierLabel: "PickupDropDialog",
-      transitionDuration: Duration(milliseconds: 300),
-      pageBuilder: (context, animation, secondaryAnimation) {
-        return Center(
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.85,
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Align(
-                    alignment: Alignment.topRight,
-                    child: Bounceable(
-                        onTap: (){
-                          Navigator.pop(context); // Close dialog
-                          controller?.resumeCamera(); // Resume camera
-                          setState(() {
-                            scanned = false; // Allow re-scan
-                          });
-                        },
-                        child: Icon(Icons.refresh, size: 40,))),
-                Icon(Icons.qr_code_scanner, size: 50, color: Colors.blueAccent),
-                SizedBox(height: 10),
-                Text(
-                  "QR Code Scanned!",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                    decoration: TextDecoration.none,
-                  ),
-                ),
-                SizedBox(height: 40),
-                // Text(
-                //   "Data: $data",
-                //   style: TextStyle(fontSize: 16, color: Colors.black54),
-                //   textAlign: TextAlign.center,
-                // ),
-                // SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-
-                    CommonButton(
-                      onTap: (){
-                        Navigator.pushNamed(context, "/AcknowledgeImageUploadScreen");
-                      },
-                        height: ScreenUtils().screenHeight(context)*0.05,
-                        width: ScreenUtils().screenWidth(context)*0.3,
-                        icon: Icons.local_shipping,
-                        buttonName: "Pickup",
-                        fontSize: 14,
-                        borderRadius: 8,
-                        buttonTextColor: AppColors.white,
-                        gradientColor1: AppColors.alphabetSafeArea,
-                        gradientColor2: AppColors.colorSkyBlue500
-                    ),
-
-                    CommonButton(
-                        onTap: (){
-                          Navigator.pushNamed(context, "/AcknowledgeImageUploadScreen");
-                        },
-                        height: ScreenUtils().screenHeight(context)*0.05,
-                        width: ScreenUtils().screenWidth(context)*0.3,
-                        buttonName: "Dropoff",
-                        icon: Icons.location_on,
-                        fontSize: 12,
-                        borderRadius: 8,
-                        buttonTextColor: AppColors.white,
-                        gradientColor1: AppColors.welcomeButtonColor,
-                        gradientColor2: AppColors.listenSpellBg
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-      transitionBuilder: (context, animation, secondaryAnimation, child) {
-        return FadeTransition(
-          opacity: animation,
-          child: ScaleTransition(
-            scale: CurvedAnimation(parent: animation, curve: Curves.easeOutBack),
-            child: child,
-          ),
-        );
-      },
-    );
-  }
 
   @override
   void dispose() {

@@ -11,76 +11,201 @@ class SigninScreen extends StatefulWidget {
   State<SigninScreen> createState() => _SigninScreenState();
 }
 
-class _SigninScreenState extends State<SigninScreen> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+class _SigninScreenState extends State<SigninScreen>
+    with TickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeAnimation;
+  late Animation<Offset> _slideAnimation;
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  bool rememberMe = false;
+  bool obscureText = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1200),
+      vsync: this,
+    );
+
+    _fadeAnimation = CurvedAnimation(
+      parent: _controller,
+      curve: Interval(0.2, 1.0, curve: Curves.easeIn),
+    );
+
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0.0, 0.2),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOut,
+    ));
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        height: ScreenUtils().screenHeight(context),
-        width: ScreenUtils().screenWidth(context),
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [AppColors.drawerColor, AppColors.drawerColor1])),
-        child: Padding(
-          padding: EdgeInsets.all(ScreenUtils().screenWidth(context) * 0.04),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Login",
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
+      backgroundColor: AppColors.white,
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            // Top background image
+            Image.asset(
+              "assets/icons/signin.png",
+              width: ScreenUtils().screenWidth(context),
+              height: ScreenUtils().screenHeight(context) * 0.45,
+              fit: BoxFit.cover,
+            ),
+
+            Column(
+              children: [
+                SizedBox(height: ScreenUtils().screenHeight(context) * 0.3),
+
+                // Main content container
+                Container(
+                  width: double.infinity,
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
                     color: AppColors.white,
-                    fontSize: 30),
-              ),
-              SizedBox(height: ScreenUtils().screenHeight(context) * 0.01),
-              Text(
-                "Please login the app to access the app content",
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.white,
-                    fontSize: 14),
-              ),
-              SizedBox(height: ScreenUtils().screenHeight(context) * 0.05),
-              CustomTextField(
-                controller: emailController,
-                hintText: 'Enter your email',
-                prefixIcon: Icons.email,
-              ),
-              SizedBox(height: ScreenUtils().screenHeight(context) * 0.01),
-              CustomTextField(
-                controller: passwordController,
-                hintText: 'Password',
-                prefixIcon: Icons.lock,
-                suffixIcon: Icons.visibility,
-                isPassword: true,
-              ),
-              SizedBox(height: ScreenUtils().screenHeight(context) * 0.05),
-              CommonButton(
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, "/DashboardScannerScreen");
-                  //Navigator.pushReplacementNamed(context, "/QrGeneratorScreen");
-                },
-                height: ScreenUtils().screenHeight(context) * 0.05,
-                width: ScreenUtils().screenWidth(context),
-                buttonName: "Sign in",
-                borderRadius: 12,
-                buttonTextColor: AppColors.white,
-                fontSize: 18,
-                gradientColor1: AppColors.rewardBg,
-                gradientColor2: AppColors.exploreCardColor,
-              )
-            ],
-          ),
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 10,
+                        offset: Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 16),
+                      // Email field
+                      _animatedChild(
+                          index: 0,
+                          child: CustomTextField(
+                              controller: emailController,
+                              hintText: "Enter your email",
+                              prefixIcon: Icons.email)),
+                      SizedBox(
+                          height: ScreenUtils().screenHeight(context) * 0.015),
+
+                      _animatedChild(
+                        index: 1,
+                        child: CustomTextField(
+                          controller: passwordController,
+                          hintText: 'Password',
+                          prefixIcon: Icons.lock,
+                          suffixIcon: Icons.visibility,
+                          isPassword: true,
+                        ),
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      // Remember me and Forgot Password
+                      _animatedChild(
+                        index: 2,
+                        child: Row(
+                          children: [
+                            Checkbox(
+                              value: rememberMe,
+                              onChanged: (val) {
+                                setState(() {
+                                  rememberMe = val!;
+                                });
+                              },
+                            ),
+                            const Text(
+                              "Remember me",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.colorBlack,
+                                  fontSize: 14),
+                            ),
+                            const Spacer(),
+                            GestureDetector(
+                              onTap: () {},
+                              child: const Text(
+                                "Forgot Password ?",
+                                style: TextStyle(
+                                    color: AppColors.gray7,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                          height: ScreenUtils().screenHeight(context) * 0.05),
+
+                      // Log In Button
+                      _animatedChild(
+                          index: 3,
+                          child: CommonButton(
+                              onTap: (){
+                                Navigator.pushNamed(context, "/DashboardScreen");
+                              },
+                              height: 48,
+                              width: ScreenUtils().screenWidth(context),
+                              buttonName: "Signin",
+                              fontSize: 16,
+                              borderRadius: 10,
+                              buttonTextColor: AppColors.white,
+                              gradientColor1: AppColors.blue,
+                              gradientColor2: AppColors.blue.withOpacity(0.5))),
+
+                      SizedBox(
+                          height: ScreenUtils().screenHeight(context) * 0.05),
+                      Image.asset("assets/icons/S&IB.png",
+                        height: ScreenUtils().screenHeight(context)*0.1,
+                        width: ScreenUtils().screenWidth(context)*0.5,
+                        fit: BoxFit.fill,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
+            )
+          ],
         ),
       ),
     );
   }
-}
 
+  Widget _animatedChild({required int index, required Widget child}) {
+    return FadeTransition(
+      opacity: CurvedAnimation(
+        parent: _controller,
+        curve: Interval(0.2 + index * 0.1, 1.0, curve: Curves.easeIn),
+      ),
+      child: SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(0, 0.3),
+          end: Offset.zero,
+        ).animate(CurvedAnimation(
+          parent: _controller,
+          curve: Interval(0.2 + index * 0.1, 1.0, curve: Curves.easeOut),
+        )),
+        child: child,
+      ),
+    );
+  }
+}

@@ -45,6 +45,7 @@ class AppColors{
   static const Color navBarBackground = Color(0xFFFFF9C4);
   static const Color navBarGradientStart = Color(0xFFFFF176);
   static const Color navBarGradientEnd = Color(0xFFFFD54F);
+  static const Color blue = Color(0xFF1E33F2);
 
   static const Color drawerColor = Color(0xff034469);
   static const Color drawerColor1 = Color(0xffc8def8);

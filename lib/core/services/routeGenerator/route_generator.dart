@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:snib_order_tracking_app/features/auth/presentation/login_screen.dart';
 import 'package:snib_order_tracking_app/features/dashboard/presentation/acknowledge_image_upload_screen.dart';
 import 'package:snib_order_tracking_app/features/dashboard/presentation/dashboard_scanner_screen.dart';
+import 'package:snib_order_tracking_app/features/dashboard/presentation/dashboard_screen.dart';
 import 'package:snib_order_tracking_app/features/dashboard/presentation/qr_generator_screen.dart';
 import 'package:snib_order_tracking_app/features/dashboard/presentation/success_screen.dart';
 import 'package:snib_order_tracking_app/features/splash_screen/presentation/splash_screen.dart';
@@ -18,6 +19,7 @@ class RouteGenerator{
   static const kAcknowledgeImageUploadScreen = "/AcknowledgeImageUploadScreen";
   static const kSuccessScreen = "/SuccessScreen";
   static const kQrGeneratorScreen = "/QrGeneratorScreen";
+  static const kDashboardScreen = "/DashboardScreen";
 
 
 
@@ -44,6 +46,8 @@ class RouteGenerator{
         return _animatedPageRoute(SuccessScreen());
     case kQrGeneratorScreen:
         return _animatedPageRoute(QrGeneratorScreen());
+    case kDashboardScreen:
+        return _animatedPageRoute(DashboardScreen());
 
 
 
