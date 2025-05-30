@@ -32,7 +32,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: AppColors.drawerColor1,
+        backgroundColor: AppColors.drawerColor2,
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(

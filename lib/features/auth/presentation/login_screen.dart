@@ -173,10 +173,13 @@ class _SigninScreenState extends State<SigninScreen>
 
                       SizedBox(
                           height: ScreenUtils().screenHeight(context) * 0.05),
-                      Image.asset("assets/icons/S&IB.png",
-                        height: ScreenUtils().screenHeight(context)*0.1,
-                        width: ScreenUtils().screenWidth(context)*0.5,
-                        fit: BoxFit.fill,
+                      _animatedChild(
+                        index: 4,
+                        child: Image.asset("assets/icons/S&IB.png",
+                          height: ScreenUtils().screenHeight(context)*0.1,
+                          width: ScreenUtils().screenWidth(context)*0.5,
+                          fit: BoxFit.fill,
+                        ),
                       ),
                     ],
                   ),
