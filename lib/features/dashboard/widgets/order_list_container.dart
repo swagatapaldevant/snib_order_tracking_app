@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:snib_order_tracking_app/core/utils/constants/app_colors.dart';
 import 'package:snib_order_tracking_app/core/utils/helper/screen_utils.dart';
+import 'package:snib_order_tracking_app/features/dashboard/model/getOrderListModel.dart';
 
 class OrderListContainer extends StatelessWidget {
+  final GetOrderList? orderItem;
+
   Function() onTap;
-  OrderListContainer({super.key, required this.onTap});
+  OrderListContainer({super.key, required this.onTap, required this.orderItem});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,7 @@ class OrderListContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Gold shipping",
+                    orderItem?.requisition?.billNo.toString()??"",
                     style: TextStyle(
                         fontFamily: "Poppins",
                         color: AppColors.alphabetFunContainer4,
@@ -57,7 +60,7 @@ class OrderListContainer extends StatelessWidget {
                       padding:
                           EdgeInsets.symmetric(horizontal: 8.0, vertical: 3),
                       child: Text(
-                        "ID098765",
+                        orderItem?.requisition?.uniqueNo.toString()??"",
                         style: TextStyle(
                             fontFamily: "Poppins",
                             color: AppColors.white,
@@ -80,10 +83,10 @@ class OrderListContainer extends StatelessWidget {
                             color: AppColors.alphabetFunContainer4,
                             fontSize: 14,
                             fontWeight: FontWeight.w600),
-                        children: const <TextSpan>[
+                        children:  <TextSpan>[
                           TextSpan(
                               text:
-                                  'INA Market,Dilli Haat, Kidwai Nagar West, Kidwai Nagar,Delhi, 110023, India',
+                                  "${orderItem?.pickupFrom?.address.toString()??""} \n${orderItem?.pickupFrom?.city.toString()??""} ${orderItem?.pickupFrom?.pincode.toString()??""}",
                               style: TextStyle(
                                   fontFamily: "Poppins",
                                   color: AppColors.colorBlack,
@@ -102,10 +105,10 @@ class OrderListContainer extends StatelessWidget {
                             color: AppColors.alphabetFunContainer4,
                             fontSize: 14,
                             fontWeight: FontWeight.w600),
-                        children: const <TextSpan>[
+                        children:  <TextSpan>[
                           TextSpan(
                               text:
-                                  'INA Market,Dilli Haat, Kidwai Nagar West, Kidwai Nagar,Delhi, 110023, India',
+                              "${orderItem?.dropOutAt?.address.toString()??""} \n${orderItem?.dropOutAt?.city.toString()??""} ${orderItem?.dropOutAt?.pincode.toString()??""}",
                               style: TextStyle(
                                   fontFamily: "Poppins",
                                   color: AppColors.colorBlack,
@@ -125,15 +128,15 @@ class OrderListContainer extends StatelessWidget {
                     children: [
                       RichText(
                         text: TextSpan(
-                          text: 'Pick up: ',
+                          text: 'Pick up : ',
                           style: TextStyle(
                               fontFamily: "Poppins",
                               color: AppColors.alphabetFunContainer4,
                               fontSize: 12,
                               fontWeight: FontWeight.w600),
-                          children: const <TextSpan>[
+                          children:  <TextSpan>[
                             TextSpan(
-                                text: ' 24/05/2025',
+                                text: orderItem?.pickupDate?.toString()??"",
                                 style: TextStyle(
                                     fontFamily: "Poppins",
                                     color: AppColors.colorBlack,
@@ -147,15 +150,15 @@ class OrderListContainer extends StatelessWidget {
                       ),
                       RichText(
                         text: TextSpan(
-                          text: 'Drop off: ',
+                          text: 'Drop off : ',
                           style: TextStyle(
                               fontFamily: "Poppins",
                               color: AppColors.alphabetFunContainer4,
                               fontSize: 12,
                               fontWeight: FontWeight.w600),
-                          children: const <TextSpan>[
+                          children:  <TextSpan>[
                             TextSpan(
-                                text: ' 24/05/2025',
+                                text: orderItem?.dropOutDate?.toString()??"",
                                 style: TextStyle(
                                     fontFamily: "Poppins",
                                     color: AppColors.colorBlack,
@@ -178,7 +181,9 @@ class OrderListContainer extends StatelessWidget {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                            color: AppColors.progressBarTextColor,
+                            color: orderItem?.status == "none"?AppColors.colorTomato:
+                            orderItem?.status=="shipped"?AppColors.progressBarColor:
+                            AppColors.alphabetFunContainer4,
                             borderRadius: BorderRadius.circular(5),
                             boxShadow: [
                               BoxShadow(
@@ -192,7 +197,7 @@ class OrderListContainer extends StatelessWidget {
                           padding: EdgeInsets.symmetric(
                               horizontal: 8.0, vertical: 3),
                           child: Text(
-                            "Pending",
+                            orderItem?.status.toString()??"",
                             style: TextStyle(
                                 fontFamily: "Poppins",
                                 color: AppColors.white,

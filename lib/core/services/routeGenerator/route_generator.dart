@@ -2,9 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:snib_order_tracking_app/features/auth/presentation/login_screen.dart';
+import 'package:snib_order_tracking_app/features/dashboard/model/getOrderListModel.dart';
 import 'package:snib_order_tracking_app/features/dashboard/presentation/acknowledge_image_upload_screen.dart';
 import 'package:snib_order_tracking_app/features/dashboard/presentation/dashboard_scanner_screen.dart';
 import 'package:snib_order_tracking_app/features/dashboard/presentation/dashboard_screen.dart';
+import 'package:snib_order_tracking_app/features/dashboard/presentation/order_item_details_screen.dart';
+import 'package:snib_order_tracking_app/features/dashboard/presentation/otp_verification_screen.dart';
 import 'package:snib_order_tracking_app/features/dashboard/presentation/qr_generator_screen.dart';
 import 'package:snib_order_tracking_app/features/dashboard/presentation/success_screen.dart';
 import 'package:snib_order_tracking_app/features/splash_screen/presentation/splash_screen.dart';
@@ -19,7 +22,9 @@ class RouteGenerator{
   static const kAcknowledgeImageUploadScreen = "/AcknowledgeImageUploadScreen";
   static const kSuccessScreen = "/SuccessScreen";
   static const kQrGeneratorScreen = "/QrGeneratorScreen";
+  static const kOtpScreen = "/OtpScreen";
   static const kDashboardScreen = "/DashboardScreen";
+  static const kOrderItemDetailsScreen = "/OrderItemDetailsScreen";
 
 
 
@@ -40,14 +45,28 @@ class RouteGenerator{
         return _animatedPageRoute(SigninScreen());
     case kDashboardScannerScreen:
         return _animatedPageRoute(DashboardScannerScreen());
-    case kAcknowledgeImageUploadScreen:
-        return _animatedPageRoute(AcknowledgeImageUploadScreen());
+      case kAcknowledgeImageUploadScreen:
+        final args = settings.arguments as Map<String, dynamic>;
+        return _animatedPageRoute(
+          AcknowledgeImageUploadScreen(
+            requisitionId: args['requisition'],
+            routeListId: args['routeListId'],
+            otp: args['otp'],
+            type: args['type'],
+          ),
+        );
     case kSuccessScreen:
         return _animatedPageRoute(SuccessScreen());
     case kQrGeneratorScreen:
         return _animatedPageRoute(QrGeneratorScreen());
     case kDashboardScreen:
         return _animatedPageRoute(DashboardScreen());
+    case kOtpScreen:
+      final args = settings.arguments as Map<String, dynamic>;
+        return _animatedPageRoute(
+            OtpScreen(orderItem: args["orderItem"], type: args["type"],));
+    case kOrderItemDetailsScreen:
+        return _animatedPageRoute(OrderItemDetailsScreen(orderItem: args as GetOrderList,));
 
 
 

@@ -5,9 +5,9 @@ import 'package:snib_order_tracking_app/core/services/localStorage/shared_pref.d
 class SharedPrefImpl extends SharedPref {
 
 
-  final String _languageId = "Language Id";
+  final String _id = "Id";
   final String _loginStatus = "loginStatus";
-  final String _childId = "child id";
+  final String _childId = "user id";
   final String _userType = "user type";
   final String _vowelId = "vowel id";
   final String _consonantId = "consonant id";
@@ -35,15 +35,15 @@ class SharedPrefImpl extends SharedPref {
 
 
   @override
-  Future<String?> getLanguageId() async {
+  Future<String?> getId() async {
     final SharedPreferences prefs = await super.prefs;
-    return prefs.getString(_languageId) ?? "";
+    return prefs.getString(_id) ?? "";
   }
 
   @override
-  void setLanguageId(String id) async{
+  void setId(String id) async{
     final SharedPreferences prefs = await super.prefs;
-    prefs.setString(_languageId, id);
+    prefs.setString(_id, id);
   }
 
   @override
@@ -81,6 +81,10 @@ class SharedPrefImpl extends SharedPref {
     final SharedPreferences prefs = await super.prefs;
     prefs.setString(_childId, childId);
   }
+
+
+
+
 
 
   @override
@@ -228,9 +232,9 @@ class SharedPrefImpl extends SharedPref {
   }
 
   @override
-  Future<int> getUserId() async {
+  Future<String> getUserId() async {
     final SharedPreferences prefs = await super.prefs;
-    return prefs.getInt(_userId) ?? 0;
+    return prefs.getString(_userId) ?? "";
   }
 
   @override
@@ -276,9 +280,9 @@ class SharedPrefImpl extends SharedPref {
   }
 
   @override
-  void setUserId(int rollId) async {
+  void setUserId(String rollId) async {
     final SharedPreferences prefs = await super.prefs;
-    prefs.setInt(_userId, rollId);
+    prefs.setString(_userId, rollId);
   }
 
   @override

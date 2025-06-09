@@ -124,25 +124,25 @@ class _CustomTextFieldState extends State<CustomTextField> {
     _isObscure = widget.isPassword;
   }
 
-  bool _isValidEmailOrPhone(String input) {
-    final emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
-    final phoneRegex = RegExp(r"^\d{10}$");
-    return emailRegex.hasMatch(input) || phoneRegex.hasMatch(input);
-  }
-
-  void _validateInput(String value) {
-    if (widget.hintText.toLowerCase().contains("email") || widget.hintText.toLowerCase().contains("mobile")) {
-      if (value.isEmpty) {
-        setState(() => _errorText = "This field is required.");
-      } else if (!_isValidEmailOrPhone(value)) {
-        setState(() => _errorText = "Enter a valid email or phone number.");
-      } else {
-        setState(() => _errorText = null);
-      }
-    } else {
-      setState(() => _errorText = null);
-    }
-  }
+  // bool _isValidEmailOrPhone(String input) {
+  //   // final emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+  //   // final phoneRegex = RegExp(r"^\d{10}$");
+  //   // return emailRegex.hasMatch(input) || phoneRegex.hasMatch(input);
+  // }
+  //
+  // void _validateInput(String value) {
+  //   if (widget.hintText.toLowerCase().contains("email") || widget.hintText.toLowerCase().contains("mobile")) {
+  //     if (value.isEmpty) {
+  //       setState(() => _errorText = "This field is required.");
+  //     } else if (!_isValidEmailOrPhone(value)) {
+  //       setState(() => _errorText = "Enter a valid email or phone number.");
+  //     } else {
+  //       setState(() => _errorText = null);
+  //     }
+  //   } else {
+  //     setState(() => _errorText = null);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +169,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 : TextInputType.text,
             cursorColor: AppColors.colorPrimaryText,
             cursorWidth: 2,
-            onChanged: _validateInput,
+            //onChanged: _validateInput,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               color: AppColors.colorBlack,

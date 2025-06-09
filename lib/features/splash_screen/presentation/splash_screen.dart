@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:snib_order_tracking_app/core/network/apiHelper/locator.dart';
+import 'package:snib_order_tracking_app/core/services/localStorage/shared_pref.dart';
 import 'package:snib_order_tracking_app/core/utils/constants/app_colors.dart';
 import 'package:snib_order_tracking_app/core/utils/helper/screen_utils.dart';
 
@@ -16,6 +18,8 @@ class _SplashScreenState extends State<SplashScreen>
 
   late AnimationController _textController;
   late Animation<double> _textFadeAnimation;
+  final SharedPref _pref = getIt<SharedPref>();
+
 
   @override
   void initState() {
@@ -47,7 +51,8 @@ class _SplashScreenState extends State<SplashScreen>
 
     // Navigation
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, "/SigninScreen");
+      setTimerNavigation();
+      //Navigator.pushReplacementNamed(context, "/SigninScreen");
     });
   }
 
@@ -105,6 +110,24 @@ class _SplashScreenState extends State<SplashScreen>
         ],
       ),
     );
+  }
+
+  void setTimerNavigation() async {
+    String token = await _pref.getUserAuthToken();
+    bool loginStatus = await _pref.getLoginStatus();
+    String userType = await _pref.getUserType();
+
+    try {
+      if (token.length > 10) {
+        Navigator.pushReplacementNamed(context, "/DashboardScreen");
+      }
+      else{
+        Navigator.pushReplacementNamed(context, "/SigninScreen");
+      }
+
+    } catch (ex) {
+      Navigator.pushReplacementNamed(context, "/SigninScreen");
+    }
   }
 }
 

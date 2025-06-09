@@ -6,8 +6,8 @@ abstract class SharedPref {
   SharedPref();
 
   // for language id
-  void setLanguageId(String id);
-  Future<String?>getLanguageId();
+  void setId(String id);
+  Future<String?>getId();
 
   // for login or not
   void setLoginStatus(bool status);
@@ -68,8 +68,8 @@ abstract class SharedPref {
   void setPremimumStatus(bool status);
   Future<bool> getPremimumStatus();
 
-  void setUserId(int rollId);
-  Future<int> getUserId();
+  void setUserId(String rollId);
+  Future<String> getUserId();
 
   void setFirebaseToken(String token);
   Future<String> getFirebaseToken();
