@@ -14,6 +14,7 @@ class ApiEndPoint{
 
   //auth module
   static const loginApi =  "/login";
+  static const tokenVerify =  "/getLoginUser";
 
   static const dashboardApi =  "/getTaskForPartner";
   static const getOtp =  "/sendOtp";

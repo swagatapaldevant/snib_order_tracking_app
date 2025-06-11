@@ -39,13 +39,17 @@ class _OtpScreenState extends State<OtpScreen> {
   bool isLoading = false;
   String otp = "";
   String requisitionId = "";
-
+   List<String> phoneNumbers =[];
+   List<String> personName =[];
+  String selectedPhone = '';
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getOtp();
+    phoneNumbers = widget.type == "pickup"?[widget.orderItem.pickupFrom?.ap1Phone.toString()??"", widget.orderItem.pickupFrom?.ap2Phone.toString()??""]:[widget.orderItem.dropOutAt?.ap1Phone.toString()??"",widget.orderItem.dropOutAt?.ap2Phone.toString()??""];
+    personName = widget.type == "pickup"?[widget.orderItem.pickupFrom?.ap1Name.toString()??"", widget.orderItem.pickupFrom?.ap2Name.toString()??""]:[widget.orderItem.dropOutAt?.ap1Name.toString()??"",widget.orderItem.dropOutAt?.ap2Name.toString()??""];
+    //getOtp();
   }
 
   @override
@@ -71,6 +75,10 @@ class _OtpScreenState extends State<OtpScreen> {
     return _controllers.map((c) => c.text).join();
   }
 
+
+
+
+
   @override
   Widget build(BuildContext context) {
     AppDimensions.init(context);
@@ -79,7 +87,7 @@ class _OtpScreenState extends State<OtpScreen> {
         child: Padding(
           padding: EdgeInsets.all(AppDimensions.screenPadding),
           child: Container(
-            height: ScreenUtils().screenHeight(context)*0.5,
+            height: ScreenUtils().screenHeight(context)*0.7,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: AppColors.white,
@@ -105,7 +113,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       )),
                   SizedBox(height: ScreenUtils().screenHeight(context) * 0.02),
                   Text(
-                    "Next",
+                    "Otp Verification",
                     style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w600,
@@ -113,89 +121,172 @@ class _OtpScreenState extends State<OtpScreen> {
                         color: AppColors.alphabetFunContainer4),
                   ),
                   SizedBox(height: ScreenUtils().screenHeight(context) * 0.02),
-                  const Text(
-                    "Enter the 5-digit code sent to your phone",
+
+                  Text(
+                    "Choose a number in which number you want to send otp : ",
                     style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
                         fontFamily: "Poppins",
-                        color: AppColors.darkBlue),
-                    textAlign: TextAlign.center,
+                        color: AppColors.alphabetFunContainer4),
                   ),
-                  SizedBox(height: ScreenUtils().screenHeight(context) * 0.03),
+
+                  SizedBox(height: ScreenUtils().screenHeight(context) * 0.02),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: List.generate(5, (index) {
-                      return SizedBox(
-                        width: ScreenUtils().screenWidth(context) * 0.1,
-                        child: TextField(
-                          controller: _controllers[index],
-                          focusNode: _focusNodes[index],
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.center,
-                          maxLength: 1,
-                          style: const TextStyle(fontSize: 18),
-                          decoration: const InputDecoration(
-                            counterText: '',
-                            border: OutlineInputBorder(),
+                    children: List.generate(phoneNumbers.length, (index) {
+                      final number = phoneNumbers[index];
+                      final name = personName[index];
+                      final isSelected = number == selectedPhone;
+
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedPhone = number;
+                            getOtp(); // Call OTP function
+                          });
+                          print("Selected number: $selectedPhone");
+                        },
+                        child: Container(
+                          width: ScreenUtils().screenWidth(context)*0.4,
+                          height: ScreenUtils().screenHeight(context)*0.13,
+                          decoration: BoxDecoration(
+                            color: isSelected ? AppColors().colorBlack600 : AppColors.progressBarColor,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: isSelected ? Colors.white : Colors.transparent,
+                              width: 1,
+                            ),
                           ),
-                          onChanged: (value) => onOtpChanged(value, index),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              spacing: 5,
+                              children: [
+                                Text(
+                                  name,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: "Poppins",
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Text(
+                                  number,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: "Poppins",
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       );
                     }),
                   ),
-                  SizedBox(height: ScreenUtils().screenHeight(context) * 0.04),
-                    Align(
-                    alignment: Alignment.centerLeft,
-                    child: Bounceable(
-                      onTap: (){
-                        getOtp();
-                      },
-                      child: const Text(
-                        "Resend OTP",
+
+
+                  SizedBox(height: ScreenUtils().screenHeight(context) * 0.02),
+
+
+                  selectedPhone==""?SizedBox.shrink():
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Enter the 5-digit code sent to your phone",
                         style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 12,
                             fontWeight: FontWeight.w500,
                             fontFamily: "Poppins",
                             color: AppColors.darkBlue),
                         textAlign: TextAlign.center,
                       ),
-                    ),
-                  ),
-                  SizedBox(height: ScreenUtils().screenHeight(context) * 0.03),
-                  CommonButton(
-                      onTap: () {
-                        final otp = getEnteredOTP();
-                        if (otp.length == 5) {
-                          //verifyOtp();
-                          Navigator.pushNamed(context, "/AcknowledgeImageUploadScreen",
-                          arguments: {
-                            "requisition": widget.orderItem.requisition?.sId,
-                            "routeListId": widget.orderItem.sId,
-                            "otp": otp,
-                            "type":widget.type
-                          }
-
+                      SizedBox(height: ScreenUtils().screenHeight(context) * 0.03),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: List.generate(5, (index) {
+                          return SizedBox(
+                            width: ScreenUtils().screenWidth(context) * 0.1,
+                            child: TextField(
+                              controller: _controllers[index],
+                              focusNode: _focusNodes[index],
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center,
+                              maxLength: 1,
+                              style: const TextStyle(fontSize: 18),
+                              decoration: const InputDecoration(
+                                counterText: '',
+                                border: OutlineInputBorder(),
+                              ),
+                              onChanged: (value) => onOtpChanged(value, index),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                            ),
                           );
+                        }),
+                      ),
+                      SizedBox(height: ScreenUtils().screenHeight(context) * 0.04),
+                        Align(
+                        alignment: Alignment.centerLeft,
+                        child: Bounceable(
+                          onTap: (){
+                            getOtp();
+                          },
+                          child: const Text(
+                            "Resend OTP",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: "Poppins",
+                                color: AppColors.darkBlue),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: ScreenUtils().screenHeight(context) * 0.03),
+                      CommonButton(
+                          onTap: () {
+                            final otp = getEnteredOTP();
+                            if (otp.length == 5) {
+                              //verifyOtp();
+                              Navigator.pushNamed(context, "/AcknowledgeImageUploadScreen",
+                              arguments: {
+                                "requisition": widget.orderItem.requisition?.sId,
+                                "routeListId": widget.orderItem.sId,
+                                "otp": otp,
+                                "type":widget.type
+                              }
 
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text("Enter a valid 5-digit OTP")),
-                          );
-                        }
-                      },
-                      height: ScreenUtils().screenHeight(context) * 0.05,
-                      width: ScreenUtils().screenWidth(context),
-                      buttonName: "Verify",
-                      fontSize: 14,
-                      borderRadius: 10,
-                      buttonTextColor: AppColors.white,
-                      gradientColor1: AppColors.alphabetFunContainer,
-                      gradientColor2: AppColors.colorSkyBlue500)
+                              );
+
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("Enter a valid 5-digit OTP")),
+                              );
+                            }
+                          },
+                          height: ScreenUtils().screenHeight(context) * 0.05,
+                          width: ScreenUtils().screenWidth(context),
+                          buttonName: "Next",
+                          fontSize: 14,
+                          borderRadius: 10,
+                          buttonTextColor: AppColors.white,
+                          gradientColor1: AppColors.alphabetFunContainer,
+                          gradientColor2: AppColors.colorSkyBlue500),
+                    ],
+                  )
                 ],
               ),
             ),
@@ -212,7 +303,7 @@ class _OtpScreenState extends State<OtpScreen> {
     });
     try {
       final authToken = await _pref.getUserAuthToken();
-      final url = '${ApiEndPoint.getOtp}/${widget.orderItem.requisition?.sId}';
+      final url = '${ApiEndPoint.getOtp}/${widget.orderItem.requisition?.sId}/$selectedPhone';
       final response = await _dio.get(
         url,
         options: Options(

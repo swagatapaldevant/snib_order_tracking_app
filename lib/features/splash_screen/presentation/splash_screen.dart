@@ -1,7 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:snib_order_tracking_app/core/network/apiHelper/api_endpoint.dart';
 import 'package:snib_order_tracking_app/core/network/apiHelper/locator.dart';
+import 'package:snib_order_tracking_app/core/network/dioClient/dio_client.dart';
 import 'package:snib_order_tracking_app/core/services/localStorage/shared_pref.dart';
 import 'package:snib_order_tracking_app/core/utils/constants/app_colors.dart';
+import 'package:snib_order_tracking_app/core/utils/helper/common_utils.dart';
 import 'package:snib_order_tracking_app/core/utils/helper/screen_utils.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -19,6 +23,8 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController _textController;
   late Animation<double> _textFadeAnimation;
   final SharedPref _pref = getIt<SharedPref>();
+  final Dio _dio = DioClient().dio;
+  bool isLoading = false;
 
 
   @override
@@ -51,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     // Navigation
     Future.delayed(const Duration(seconds: 2), () {
-      setTimerNavigation();
+      checkToken();
       //Navigator.pushReplacementNamed(context, "/SigninScreen");
     });
   }
@@ -112,23 +118,64 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 
-  void setTimerNavigation() async {
-    String token = await _pref.getUserAuthToken();
-    bool loginStatus = await _pref.getLoginStatus();
-    String userType = await _pref.getUserType();
+  // void setTimerNavigation() async {
+  //   String token = await _pref.getUserAuthToken();
+  //   bool loginStatus = await _pref.getLoginStatus();
+  //   String userType = await _pref.getUserType();
+  //
+  //   try {
+  //     if (token.length > 10) {
+  //       Navigator.pushReplacementNamed(context, "/DashboardScreen");
+  //     }
+  //     else{
+  //       Navigator.pushReplacementNamed(context, "/SigninScreen");
+  //     }
+  //
+  //   } catch (ex) {
+  //     Navigator.pushReplacementNamed(context, "/SigninScreen");
+  //   }
+  // }
 
+
+  Future<void> checkToken() async {
+    // setState(() {
+    //   //isLoading = true;
+    // });
     try {
-      if (token.length > 10) {
+      final authToken = await _pref.getUserAuthToken();
+      final response = await _dio.get(
+        ApiEndPoint.tokenVerify,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $authToken',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
         Navigator.pushReplacementNamed(context, "/DashboardScreen");
-      }
-      else{
+      } else {
         Navigator.pushReplacementNamed(context, "/SigninScreen");
       }
 
-    } catch (ex) {
-      Navigator.pushReplacementNamed(context, "/SigninScreen");
+      setState(() {
+        isLoading = false;
+      });
+    } on DioException catch (e) {
+      if (e.response != null) {
+        Navigator.pushReplacementNamed(context, "/SigninScreen");
+
+        print("Dio error response: ${e.response?.data}");
+      } else {
+        Navigator.pushReplacementNamed(context, "/SigninScreen");
+
+        print("Dio error message: ${e.message}");
+      }
+      setState(() {
+        isLoading = false;
+      });
     }
   }
+
 }
 
 class SplashBackgroundPainter extends CustomPainter {

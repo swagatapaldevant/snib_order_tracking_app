@@ -106,8 +106,8 @@ class PickupFrom {
   String? ap1Phone;
   String? ap2Name;
   String? ap2Phone;
-  Null? lat;
-  Null? long;
+  double? lat;
+  double? long;
   int? iV;
 
   PickupFrom(
