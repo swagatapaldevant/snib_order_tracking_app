@@ -264,7 +264,7 @@ class _AcknowledgeImageUploadScreenState
       } else {
         CommonUtils().flutterSnackBar(
           context: context,
-          mes: "Your entered OTP is wrong",
+          mes: "Invalid OTP",
           messageType: 4,
         );
       }
@@ -272,17 +272,17 @@ class _AcknowledgeImageUploadScreenState
       if (e.response != null) {
         CommonUtils().flutterSnackBar(
           context: context,
-          mes: "Server error: ${e.response?.data}",
+          mes: "${e.response?.data}",
           messageType: 4,
         );
-        print("Dio error response: ${e.response?.data}");
+        print("${e.response?.data}");
       } else {
         CommonUtils().flutterSnackBar(
           context: context,
-          mes: "Request failed: ${e.message}",
+          mes: "${e.message}",
           messageType: 4,
         );
-        print("Dio error message: ${e.message}");
+        print("${e.message}");
       }
     } finally {
       setState(() {
@@ -328,7 +328,7 @@ class _AcknowledgeImageUploadScreenState
       } else {
         CommonUtils().flutterSnackBar(
           context: context,
-          mes: "Your entered OTP is wrong",
+          mes: "Invalid OTP",
           messageType: 4,
         );
       }
@@ -336,17 +336,17 @@ class _AcknowledgeImageUploadScreenState
       if (e.response != null) {
         CommonUtils().flutterSnackBar(
           context: context,
-          mes: "Server error: ${e.response?.data}",
+          mes: "${e.response?.data}",
           messageType: 4,
         );
-        print("Dio error response: ${e.response?.data}");
+        print("${e.response?.data}");
       } else {
         CommonUtils().flutterSnackBar(
           context: context,
-          mes: "Request failed: ${e.message}",
+          mes: "${e.message}",
           messageType: 4,
         );
-        print("Dio error message: ${e.message}");
+        print("${e.message}");
       }
     } finally {
       setState(() {

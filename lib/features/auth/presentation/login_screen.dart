@@ -74,7 +74,7 @@ class _SigninScreenState extends State<SigninScreen>
           children: [
             // Top background image
             Image.asset(
-              "assets/icons/signin.png",
+              "assets/icons/signin.jpg",
               width: ScreenUtils().screenWidth(context),
               height: ScreenUtils().screenHeight(context) * 0.45,
               fit: BoxFit.cover,
@@ -109,7 +109,7 @@ class _SigninScreenState extends State<SigninScreen>
                           index: 0,
                           child: CustomTextField(
                               controller: emailController,
-                              hintText: "Enter your userId",
+                              hintText: "Enter your User Id",
                               prefixIcon: Icons.email)),
                       SizedBox(
                           height: ScreenUtils().screenHeight(context) * 0.015),
@@ -128,45 +128,45 @@ class _SigninScreenState extends State<SigninScreen>
                       const SizedBox(height: 12),
 
                       // Remember me and Forgot Password
-                      _animatedChild(
-                        index: 2,
-                        child: Row(
-                          children: [
-                            Checkbox(
-                              value: rememberMe,
-                              onChanged: (val) {
-                                setState(() {
-                                  rememberMe = val!;
-                                });
-                              },
-                            ),
-                            const Text(
-                              "Remember me",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.colorBlack,
-                                  fontSize: 14),
-                            ),
-                            const Spacer(),
-                            GestureDetector(
-                              onTap: () {},
-                              child: const Text(
-                                "Forgot Password ?",
-                                style: TextStyle(
-                                    color: AppColors.gray7,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
+                      // _animatedChild(
+                      //   index: 2,
+                      //   child: Row(
+                      //     children: [
+                      //       Checkbox(
+                      //         value: rememberMe,
+                      //         onChanged: (val) {
+                      //           setState(() {
+                      //             rememberMe = val!;
+                      //           });
+                      //         },
+                      //       ),
+                      //       const Text(
+                      //         "Remember me",
+                      //         style: TextStyle(
+                      //             fontWeight: FontWeight.w500,
+                      //             color: AppColors.colorBlack,
+                      //             fontSize: 14),
+                      //       ),
+                      //       const Spacer(),
+                      //       GestureDetector(
+                      //         onTap: () {},
+                      //         child: const Text(
+                      //           "Forgot Password ?",
+                      //           style: TextStyle(
+                      //               color: AppColors.gray7,
+                      //               fontSize: 14,
+                      //               fontWeight: FontWeight.w600),
+                      //         ),
+                      //       )
+                      //     ],
+                      //   ),
+                      // ),
                       SizedBox(
                           height: ScreenUtils().screenHeight(context) * 0.05),
 
                       // Log In Button
                       _animatedChild(
-                          index: 3,
+                          index: 2,
                           child: isLoading
                               ? CircularProgressIndicator(
                                   color: AppColors.darkBlue,
@@ -186,7 +186,7 @@ class _SigninScreenState extends State<SigninScreen>
                                       CommonUtils().flutterSnackBar(
                                           context: context,
                                           mes:
-                                              "Please enter userId and password",
+                                              "Please enter User Id and Password",
                                           messageType: 4);
                                     }
 
@@ -194,7 +194,7 @@ class _SigninScreenState extends State<SigninScreen>
                                   },
                                   height: 48,
                                   width: ScreenUtils().screenWidth(context),
-                                  buttonName: "Signin",
+                                  buttonName: "Sign In",
                                   fontSize: 16,
                                   borderRadius: 10,
                                   buttonTextColor: AppColors.white,
@@ -205,7 +205,7 @@ class _SigninScreenState extends State<SigninScreen>
                       SizedBox(
                           height: ScreenUtils().screenHeight(context) * 0.05),
                       _animatedChild(
-                        index: 4,
+                        index: 3,
                         child: Image.asset(
                           "assets/icons/S&IB.png",
                           height: ScreenUtils().screenHeight(context) * 0.1,
@@ -269,6 +269,10 @@ class _SigninScreenState extends State<SigninScreen>
 
         print("Login successful: ${response.data["token"]}");
       } else {
+        CommonUtils().flutterSnackBar(
+            context: context,
+            mes: "Invalid credentials",
+            messageType: 4);
         print("⚠️ Unexpected status: ${response.statusCode}");
       }
 
@@ -277,17 +281,25 @@ class _SigninScreenState extends State<SigninScreen>
       });
     } on DioException catch (e) {
       if (e.response != null) {
+        // CommonUtils().flutterSnackBar(
+        //     context: context,
+        //     mes: "Dio error response: ${e.response?.data}",
+        //     messageType: 4);
         CommonUtils().flutterSnackBar(
             context: context,
-            mes: "Dio error response: ${e.response?.data}",
+            mes: "Invalid credentials",
             messageType: 4);
 
         print("Dio error response: ${e.response?.data}");
       } else {
         CommonUtils().flutterSnackBar(
             context: context,
-            mes: "Dio error message: ${e.message}",
+            mes: "Invalid credentials",
             messageType: 4);
+        // CommonUtils().flutterSnackBar(
+        //     context: context,
+        //     mes: "Dio error message: ${e.message}",
+        //     messageType: 4);
 
         print("Dio error message: ${e.message}");
       }
