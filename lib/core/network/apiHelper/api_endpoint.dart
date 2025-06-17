@@ -20,6 +20,7 @@ class ApiEndPoint{
   static const getOtp =  "/sendOtp";
   static const verifyOtp =  "/pickupConsignment";
   static const dropOff =  "/dropOffConsignment";
+  static const getTaskForPartnerByDate =  "/getTaskForPartnerByDate";
 
 
 

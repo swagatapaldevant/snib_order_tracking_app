@@ -167,6 +167,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
             keyboardType: (widget.hintText.toLowerCase().contains("email") || widget.hintText.toLowerCase().contains("mobile"))
                 ? TextInputType.emailAddress
                 : TextInputType.text,
+            textCapitalization: TextCapitalization.characters,
+
+
             cursorColor: AppColors.colorPrimaryText,
             cursorWidth: 2,
             //onChanged: _validateInput,

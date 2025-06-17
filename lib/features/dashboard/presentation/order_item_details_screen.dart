@@ -239,7 +239,7 @@ class OrderItemDetailsScreen extends StatelessWidget {
                               children:  <TextSpan>[
                                 TextSpan(
                                     text:
-                                    " ${orderItem.pickupDate.toString()??""}",
+                                    " ${extractDate(orderItem.pickupDate.toString())??""}",
                                     style: TextStyle(
                                         fontFamily: "Poppins",
                                         color: AppColors.colorBlack,
@@ -384,7 +384,7 @@ class OrderItemDetailsScreen extends StatelessWidget {
                               children:  <TextSpan>[
                                 TextSpan(
                                     text:
-                                    " ${orderItem.pickupDate.toString()??""}",
+                                    " ${extractDate(orderItem.pickupDate.toString())??""}",
                                     style: TextStyle(
                                         fontFamily: "Poppins",
                                         color: AppColors.colorBlack,
@@ -442,5 +442,11 @@ class OrderItemDetailsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+
+  String extractDate(String isoString) {
+    DateTime dateTime = DateTime.parse(isoString);
+    return dateTime.toIso8601String().split('T').first;
   }
 }

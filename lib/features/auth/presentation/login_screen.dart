@@ -110,7 +110,7 @@ class _SigninScreenState extends State<SigninScreen>
                           child: CustomTextField(
                               controller: emailController,
                               hintText: "Enter your User Id",
-                              prefixIcon: Icons.email)),
+                              prefixIcon: Icons.supervised_user_circle)),
                       SizedBox(
                           height: ScreenUtils().screenHeight(context) * 0.015),
 
@@ -266,6 +266,12 @@ class _SigninScreenState extends State<SigninScreen>
           {
             Navigator.pushNamed(context, "/DashboardScreen");
           }
+        else{
+          CommonUtils().flutterSnackBar(
+              context: context,
+              mes: "You are not delivery partner, please contact with admin",
+              messageType: 4);
+        }
 
         print("Login successful: ${response.data["token"]}");
       } else {

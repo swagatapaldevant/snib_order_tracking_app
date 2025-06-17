@@ -106,13 +106,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         isLoading?loading():Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "Hi $name ",
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: "Poppins",
-                                  color: AppColors.alphabetFunContainer4),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              spacing: 10,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    "Hi $name ",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: "Poppins",
+                                        color: AppColors.alphabetFunContainer4),
+                                  ),
+                                ),
+                                CommonButton(
+                                  onTap: (){
+                                    Navigator.pushNamed(context, "/DeliveryReportScreen");
+                                  },
+                                    height: ScreenUtils().screenHeight(context)*0.04,
+                                    width: ScreenUtils().screenWidth(context)*0.4,
+                                    buttonName: "Delivery Report",
+                                    fontSize: 14,
+                                    borderRadius: 10,
+                                    buttonTextColor: AppColors.white,
+                                    gradientColor1: AppColors.darkBlue,
+                                    gradientColor2: AppColors.darkBlue
+                                )
+                              ],
                             ),
                             SizedBox(
                               height: 5,
@@ -120,7 +141,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             Text(
                               "Today's orders list : ",
                               style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 17,
                                   fontWeight: FontWeight.w500,
                                   fontFamily: "Poppins",
                                   color: AppColors.alphabetFunContainer4),
@@ -128,6 +149,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             SizedBox(
                               height: ScreenUtils().screenHeight(context) * 0.02,
                             ),
+                            orderList.isEmpty? Center(
+                              child: Text("No Orders assigned for you\nPlease contact with admin\n\nTo get new orders, tap the refresh icon at the top right of the screen",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: "Poppins",
+                                  color: AppColors.colorBlack),),
+                            ):
                             ListView.builder(
                                 itemCount: orderList.length,
                                 physics: NeverScrollableScrollPhysics(),
@@ -155,26 +185,39 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Positioned(
                         top:  ScreenUtils().screenWidth(context)*0.05,
                         right: 0,
-                        child: Bounceable(
-                            onTap: (){
-                              CommonDialog(
-                                  icon: Icons.logout,
-                                  title: "Log Out",
-                                  msg:
-                                  "You are about to logout of your account. Please confirm.",
-                                  activeButtonLabel: "Log Out",
-                                  context: context,
-                                  activeButtonOnClicked: () {
-                                    _pref.clearOnLogout();
-                                    Navigator.pushNamedAndRemoveUntil(
-                                      context,
-                                      "/SigninScreen",
-                                          (Route<dynamic> route) =>
-                                      false, // Removes all previous routes
-                                    );
-                                  });
-                            },
-                            child: Icon(Icons.logout, color: AppColors.alphabetFunContainer4,size: 25,)))
+                        child: Row(
+                          spacing: 15,
+                          children: [
+
+                            Bounceable(
+
+                                onTap: () {
+                                  getDashboardOrderList();
+                                },
+                                child: Icon(Icons.refresh, color: AppColors.alphabetFunContainer4,size: 25,)),
+
+                            Bounceable(
+                                onTap: (){
+                                  CommonDialog(
+                                      icon: Icons.logout,
+                                      title: "Log Out",
+                                      msg:
+                                      "You are about to logout of your account. Please confirm.",
+                                      activeButtonLabel: "Log Out",
+                                      context: context,
+                                      activeButtonOnClicked: () {
+                                        _pref.clearOnLogout();
+                                        Navigator.pushNamedAndRemoveUntil(
+                                          context,
+                                          "/SigninScreen",
+                                              (Route<dynamic> route) =>
+                                          false, // Removes all previous routes
+                                        );
+                                      });
+                                },
+                                child: Icon(Icons.logout, color: AppColors.alphabetFunContainer4,size: 25,)),
+                          ],
+                        ))
                   ],
                 ),
               ),

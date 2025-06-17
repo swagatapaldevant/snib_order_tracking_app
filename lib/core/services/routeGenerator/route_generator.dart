@@ -6,6 +6,7 @@ import 'package:snib_order_tracking_app/features/dashboard/model/getOrderListMod
 import 'package:snib_order_tracking_app/features/dashboard/presentation/acknowledge_image_upload_screen.dart';
 import 'package:snib_order_tracking_app/features/dashboard/presentation/dashboard_scanner_screen.dart';
 import 'package:snib_order_tracking_app/features/dashboard/presentation/dashboard_screen.dart';
+import 'package:snib_order_tracking_app/features/dashboard/presentation/delivery_report_screen.dart';
 import 'package:snib_order_tracking_app/features/dashboard/presentation/order_item_details_screen.dart';
 import 'package:snib_order_tracking_app/features/dashboard/presentation/otp_verification_screen.dart';
 import 'package:snib_order_tracking_app/features/dashboard/presentation/qr_generator_screen.dart';
@@ -25,6 +26,7 @@ class RouteGenerator{
   static const kOtpScreen = "/OtpScreen";
   static const kDashboardScreen = "/DashboardScreen";
   static const kOrderItemDetailsScreen = "/OrderItemDetailsScreen";
+  static const kDeliveryReportScreen = "/DeliveryReportScreen";
 
 
 
@@ -67,6 +69,8 @@ class RouteGenerator{
             OtpScreen(orderItem: args["orderItem"], type: args["type"],));
     case kOrderItemDetailsScreen:
         return _animatedPageRoute(OrderItemDetailsScreen(orderItem: args as GetOrderList,));
+    case kDeliveryReportScreen:
+        return _animatedPageRoute(DeliveryReportScreen());
 
 
 

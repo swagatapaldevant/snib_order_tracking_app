@@ -136,7 +136,7 @@ class OrderListContainer extends StatelessWidget {
                               fontWeight: FontWeight.w600),
                           children:  <TextSpan>[
                             TextSpan(
-                                text: orderItem?.pickupDate?.toString()??"",
+                                text: extractDate(orderItem?.pickupDate?.toString()??""),
                                 style: TextStyle(
                                     fontFamily: "Poppins",
                                     color: AppColors.colorBlack,
@@ -158,7 +158,7 @@ class OrderListContainer extends StatelessWidget {
                               fontWeight: FontWeight.w600),
                           children:  <TextSpan>[
                             TextSpan(
-                                text: orderItem?.dropOutDate?.toString()??"",
+                                text:extractDate(orderItem?.dropOutDate?.toString()??""),
                                 style: TextStyle(
                                     fontFamily: "Poppins",
                                     color: AppColors.colorBlack,
@@ -216,4 +216,11 @@ class OrderListContainer extends StatelessWidget {
       ),
     );
   }
+
+
+  String extractDate(String isoString) {
+    DateTime dateTime = DateTime.parse(isoString);
+    return dateTime.toIso8601String().split('T').first;
+  }
+
 }
