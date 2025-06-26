@@ -314,9 +314,9 @@ class _OtpScreenState extends State<OtpScreen> {
       );
 
       if (response.statusCode == 200) {
-        requisitionId = response.data["otp"]["requisition"];
-        otp = response.data["otp"]["otp"];
-        Fluttertoast.showToast(msg: "Your OTP  is : $otp",toastLength: Toast.LENGTH_LONG,);
+       // requisitionId = response.data["otp"]["requisition"];
+       // otp = response.data["otp"]["otp"];
+        Fluttertoast.showToast(msg: "Otp send successfully",toastLength: Toast.LENGTH_LONG,);
       } else {
         print("⚠️ Unexpected status: ${response.statusCode}");
       }
