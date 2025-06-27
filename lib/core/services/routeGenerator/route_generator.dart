@@ -11,6 +11,7 @@ import 'package:snib_order_tracking_app/features/dashboard/presentation/order_it
 import 'package:snib_order_tracking_app/features/dashboard/presentation/otp_verification_screen.dart';
 import 'package:snib_order_tracking_app/features/dashboard/presentation/qr_generator_screen.dart';
 import 'package:snib_order_tracking_app/features/dashboard/presentation/success_screen.dart';
+import 'package:snib_order_tracking_app/features/splash_screen/presentation/app_version_upgrade_screen.dart';
 import 'package:snib_order_tracking_app/features/splash_screen/presentation/splash_screen.dart';
 import '../../utils/helper/app_fontSize.dart';
 
@@ -27,6 +28,7 @@ class RouteGenerator{
   static const kDashboardScreen = "/DashboardScreen";
   static const kOrderItemDetailsScreen = "/OrderItemDetailsScreen";
   static const kDeliveryReportScreen = "/DeliveryReportScreen";
+  static const kAppVersionUpgradeScreen = "/AppVersionUpgradeScreen";
 
 
 
@@ -71,6 +73,8 @@ class RouteGenerator{
         return _animatedPageRoute(OrderItemDetailsScreen(orderItem: args as GetOrderList,));
     case kDeliveryReportScreen:
         return _animatedPageRoute(DeliveryReportScreen());
+    case kAppVersionUpgradeScreen:
+        return _animatedPageRoute(AppVersionUpgradeScreen(url: args as String,));
 
 
 

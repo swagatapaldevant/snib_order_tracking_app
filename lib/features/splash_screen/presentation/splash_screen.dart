@@ -25,6 +25,7 @@ class _SplashScreenState extends State<SplashScreen>
   final SharedPref _pref = getIt<SharedPref>();
   final Dio _dio = DioClient().dio;
   bool isLoading = false;
+  String appVersion = "1.1";
 
 
   @override
@@ -152,7 +153,15 @@ class _SplashScreenState extends State<SplashScreen>
         ),
       );
       if (response.statusCode == 200) {
-        Navigator.pushReplacementNamed(context, "/DashboardScreen");
+        //
+        if(appVersion == response.data["appVersion"])
+          {
+            Navigator.pushReplacementNamed(context, "/DashboardScreen");
+          }
+        else{
+          Navigator.pushReplacementNamed(context, "/AppVersionUpgradeScreen", arguments: response.data["appDownloadLink"].toString());
+        }
+
       } else {
         Navigator.pushReplacementNamed(context, "/SigninScreen");
       }

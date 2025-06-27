@@ -181,7 +181,7 @@ class OrderListContainer extends StatelessWidget {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                            color: orderItem?.status == "none"?AppColors.colorTomato:
+                            color: orderItem?.status == "pending"?AppColors.colorTomato:
                             orderItem?.status=="shipped"?AppColors.progressBarColor:
                             AppColors.alphabetFunContainer4,
                             borderRadius: BorderRadius.circular(5),

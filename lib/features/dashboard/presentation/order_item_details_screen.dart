@@ -401,7 +401,7 @@ class OrderItemDetailsScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                     orderItem.status == "none"? CommonButton(
+                     orderItem.status == "pending"? CommonButton(
                           onTap: () {
                             Navigator.pushNamed(context, "/OtpScreen", arguments:{
                               "orderItem":orderItem,
