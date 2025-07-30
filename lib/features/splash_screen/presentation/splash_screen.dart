@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen>
   final SharedPref _pref = getIt<SharedPref>();
   final Dio _dio = DioClient().dio;
   bool isLoading = false;
-  String appVersion = "1.1";
+  String appVersion = "1.2";
 
 
   @override
