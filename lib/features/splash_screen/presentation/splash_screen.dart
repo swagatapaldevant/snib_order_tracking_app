@@ -154,7 +154,7 @@ class _SplashScreenState extends State<SplashScreen>
       );
       if (response.statusCode == 200) {
         //
-        if(appVersion == response.data["appVersion"])
+        if(appVersion == response.data["appVersion"].toString())
           {
             Navigator.pushReplacementNamed(context, "/DashboardScreen");
           }
